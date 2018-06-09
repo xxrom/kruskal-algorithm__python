@@ -64,24 +64,27 @@ class DisjointSet(object):
     return root.nodeId
 
 
-  def merge(self, node1, node2):
+  def merge(self, node1, node2): # соединяем два disjointSet в один
 
+    # ищем representative - nodeId для наборов node1 / node2
     index1 = self.find(node1)
     index2 = self.find(node2)
 
     if index1 == index2:
       return ; # node1 and node2 in the same set - dont merget them!
 
+
     root1 = self.rootNodes[index1]
     root2 = self.rootNodes[index2]
 
-    if root1.height < root2.height:
+    # проверяем, какой set к кому лучше присоединить
+    if root1.height < root2.height: # 1 < 2 => 2 - representative
       root1.parentNode = root2
-    elif root1.height > root2.height:
+    elif root1.height > root2.height: # 1 > 2 => 1 - representative
       root2.parentNode = root1
     else:
-      root2.parentNode = root1
-      root1.height += 1 # высота root1 поддерева увеличилась 1???
+      root2.parentNode = root1 # 1 = 2 => 1 - representative / H++
+      root1.height += 1 # высота root1 поддерева увеличилась 1 ++
 
   def makeSets(self, vertexList):
     for v in vertexList:
